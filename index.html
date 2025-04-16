@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Google AdSense -->
+  <script data-ad-client="ca-pub-YOUR_AD_CLIENT_ID" async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- QRCode.js Library -->
+  <script src="https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js" defer></script>
+  <!-- Custom JavaScript -->
+  <script src="script.js" type="module" defer></script>
+
+  <title>QR Code Generator</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex items-center justify-center min-h-screen p-4">
+  <!-- Top Ad Banner -->
+  <div class="container mx-auto max-w-lg mb-4">
+    <ins class="adsbygoogle w-full block" style="display:block"
+         data-ad-client="ca-pub-YOUR_AD_CLIENT_ID"
+         data-ad-slot="YOUR_AD_SLOT_ID_TOP"
+         data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <main role="main" class="container mx-auto max-w-lg">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-6">
+      <!-- Premium Upgrade CTA -->
+      <div class="text-right">
+        <a href="premium.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded">
+          Go Premium
+        </a>
+      </div>
+
+      <h1 class="text-3xl font-bold text-center">QR Code Generator</h1>
+      <form id="qr-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-describedby="error-msg">
+        <!-- Text Input -->
+        <div class="col-span-2">
+          <label for="qr-text" class="block mb-1 text-sm font-medium">Enter text or URL:</label>
+          <input id="qr-text" name="text" type="text" placeholder="https://example.com"
+                 class="w-full p-2 border rounded focus:outline-blue-500" required />
+        </div>
+        <!-- Size Input -->
+        <div>
+          <label for="qr-size" class="block mb-1 text-sm font-medium">Size (px):</label>
+          <input id="qr-size" name="size" type="number" value="200" min="100" max="1000"
+                 class="w-full p-2 border rounded focus:outline-blue-500" required />
+        </div>
+        <!-- Dark Color -->
+        <div>
+          <label for="dark-color" class="block mb-1 text-sm font-medium">Dark Color:</label>
+          <input id="dark-color" name="dark" type="color" value="#000000"
+                 class="w-full h-10 p-1 border rounded focus:outline-blue-500" />
+        </div>
+        <!-- Light Color -->
+        <div>
+          <label for="light-color" class="block mb-1 text-sm font-medium">Light Color:</label>
+          <input id="light-color" name="light" type="color" value="#ffffff"
+                 class="w-full h-10 p-1 border rounded focus:outline-blue-500" />
+        </div>
+        <!-- Format Selection -->
+        <div class="col-span-2">
+          <label for="qr-format" class="block mb-1 text-sm font-medium">Output Format:</label>
+          <select id="qr-format" name="format" class="w-full p-2 border rounded focus:outline-blue-500">
+            <option value="png">PNG</option>
+            <option value="svg">SVG</option>
+          </select>
+        </div>
+        <!-- Logo Upload -->
+        <div class="col-span-2">
+          <label for="logo-input" class="block mb-1 text-sm font-medium">Overlay Logo (PNG/JPG):</label>
+          <input id="logo-input" type="file" accept="image/*"
+                 class="w-full p-2 border rounded focus:outline-blue-500" />
+          <label for="logo-size" class="block mt-2 text-sm font-medium">Logo Scale (% of QR size):</label>
+          <input id="logo-size" type="range" min="10" max="50" value="20"
+                 class="w-full" />
+        </div>
+      </form>
+
+      <!-- Buttons & Spinner -->
+      <div class="flex items-center space-x-2">
+        <button id="generate-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded disabled:opacity-50" disabled>
+          Generate
+        </button>
+        <button id="download-btn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded disabled:opacity-50" disabled>
+          Download
+        </button>
+        <button id="copy-btn" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded disabled:opacity-50" disabled>
+          Copy
+        </button>
+        <button id="clear-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 rounded disabled:opacity-50" disabled>
+          Clear
+        </button>
+        <div id="spinner" class="hidden w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+
+      <!-- Toast Notification -->
+      <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white py-2 px-4 rounded shadow-lg opacity-0 transition-opacity"></div>
+      <!-- Error & QR Container -->
+      <div id="error-msg" class="text-red-600 text-sm text-center min-h-[1.5rem]"></div>
+      <div id="qrcode" class="flex justify-center"></div>
+
+      <!-- Bottom Ad Banner -->
+      <div class="mt-6">
+        <ins class="adsbygoogle w-full block" style="display:block"
+             data-ad-client="ca-pub-YOUR_AD_CLIENT_ID"
+             data-ad-slot="YOUR_AD_SLOT_ID_BOTTOM"
+             data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="mt-4 absolute top-4 right-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+      🌓
+    </button>
+  </main>
+</body>
+</html>

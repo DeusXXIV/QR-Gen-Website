@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Subscription</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 w-full max-w-md text-center space-y-4">
+    <h1 class="text-2xl font-bold">Unlock Premium Features</h1>
+    <p>Ad-free experience, detailed analytics, custom domains, and more.</p>
+    <button id="checkout-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded">
+      Subscribe for $5/month
+    </button>
+    <div id="checkout-error" class="text-red-600 text-sm"></div>
+  </div>
+  <script type="module">
+    import { loadStripe } from 'https://esm.sh/@stripe/stripe-js';
+    const stripe = await loadStripe('pk_test_YOUR_PUBLISHABLE_KEY');
+    document.getElementById('checkout-btn').addEventListener('click', async () => {
+      const res = await fetch('/.netlify/functions/create-checkout-session', { method: 'POST' });
+      const { url, error } = await res.json();
+      if (error) return document.getElementById('checkout-error').textContent = error.message;
+      window.location = url;
+    });
+  </script>
+</body>
+</html>
